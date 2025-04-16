@@ -1,10 +1,11 @@
+
 @extends('layouts.app')
 
 @section('content')
 <div class="container mt-4">
-    <div class="card shadow-lg">
-        <div class="card-header bg-warning text-white">
-            <h4 class="mb-0"><i class="fas fa-user-edit me-2"></i> Edit Akun Guru</h4>
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Edit Akun Guru</h4>
         </div>
 
         <div class="card-body">
@@ -15,26 +16,18 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Nama</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                            <input type="text" name="name" class="form-control" value="{{ $guru->name }}" required>
-                        </div>
+                        <input type="text" name="name" class="form-control" value="{{ $guru->name }}" required>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Email</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            <input type="email" name="email" class="form-control" value="{{ $guru->email }}" required>
-                        </div>
+                        <input type="email" name="email" class="form-control" value="{{ $guru->email }}" required>
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Update
-                    </button>
+                <div class="mt-4 d-flex justify-content-between">
                     <a href="{{ route('guru.index') }}" class="btn btn-secondary">Kembali</a>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
         </div>

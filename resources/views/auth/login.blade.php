@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistem Peminjaman Barang Sekolah</title>
+    <title>Login - Sistem Manajemen Peminjaman Barang Sekolah</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -234,7 +234,7 @@
                     </form>
                 </div>
                 <div class="login-footer">
-                    <p>&copy; {{ date('Y') }} Sistem Peminjaman Barang Sekolah</p>
+                    <p>&copy; {{ date('Y') }} Sistem Manajemen Peminjaman Barang Sekolah</p>
                 </div>
             </div>
         </div>

@@ -14,19 +14,17 @@ class AdminDashboardController extends Controller
 {
     public function index(Request $request)
 {
-    $filter = $request->input('filter', 'bulan'); // Default: Bulanan
+    $filter = $request->input('filter', 'bulan'); 
 
-    // Ambil bulan dan tahun saat ini
-    $currentMonth = Carbon::now()->month;
+     $currentMonth = Carbon::now()->month;
     $currentYear = Carbon::now()->year;
 
     if ($filter === 'minggu') {
-        // Ambil jumlah minggu dalam bulan ini
+
         $firstDayOfMonth = Carbon::createFromDate($currentYear, $currentMonth, 1);
         $lastDayOfMonth = $firstDayOfMonth->copy()->endOfMonth();
-        $totalWeeks = ceil($lastDayOfMonth->weekOfMonth); // Hitung jumlah minggu dalam bulan ini
+        $totalWeeks = ceil($lastDayOfMonth->weekOfMonth); 
 
-        // Ambil data peminjaman dan pengembalian per minggu dalam bulan ini
         $peminjamanData = Peminjaman::selectRaw('WEEK(tanggal_pinjam, 3) - WEEK(DATE_SUB(tanggal_pinjam, INTERVAL DAYOFMONTH(tanggal_pinjam)-1 DAY), 3) + 1 as minggu, COUNT(*) as total')
             ->whereYear('tanggal_pinjam', $currentYear)
             ->whereMonth('tanggal_pinjam', $currentMonth)
@@ -41,11 +39,9 @@ class AdminDashboardController extends Controller
             ->pluck('total', 'minggu')
             ->toArray();
 
-        // Inisialisasi array agar selalu ada data untuk setiap minggu dalam bulan ini
         $peminjamanChart = array_fill(0, $totalWeeks, 0);
         $pengembalianChart = array_fill(0, $totalWeeks, 0);
 
-        // Isi array dengan data dari database
         foreach ($peminjamanData as $week => $count) {
             $peminjamanChart[$week - 1] = $count;
         }
@@ -54,14 +50,12 @@ class AdminDashboardController extends Controller
             $pengembalianChart[$week - 1] = $count;
         }
 
-        // Buat label minggu
         $labels = [];
         for ($i = 1; $i <= $totalWeeks; $i++) {
             $labels[] = "Minggu $i";
         }
 
     } else {
-        // Filter Bulanan (Januari - Desember)
         $peminjamanData = Peminjaman::selectRaw('MONTH(tanggal_pinjam) as bulan, COUNT(*) as total')
             ->whereYear('tanggal_pinjam', $currentYear)
             ->groupBy('bulan')
@@ -74,7 +68,6 @@ class AdminDashboardController extends Controller
             ->pluck('total', 'bulan')
             ->toArray();
 
-        // Inisialisasi array agar selalu ada dari Januari - Desember
         $peminjamanChart = array_fill(0, 12, 0);
         $pengembalianChart = array_fill(0, 12, 0);
 
@@ -86,11 +79,9 @@ class AdminDashboardController extends Controller
             $pengembalianChart[$month - 1] = $count;
         }
 
-        // Label untuk Bulanan
         $labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
     }
 
-    // Total Barang & Guru
     $totalBarang = Barang::count();
     $totalGuru = User::where('role', 'guru')->count();
 

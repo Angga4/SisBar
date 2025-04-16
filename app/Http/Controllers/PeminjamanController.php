@@ -14,20 +14,22 @@ class PeminjamanController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
-    
+        $guru_id = Auth::id();
+        $search = $request->input('search'); 
+        $perPage = $request->input('per_page', 10); 
+
         $peminjaman = Peminjaman::with('user', 'barang')
+                    ->where('id_users', $guru_id) 
                     ->when($search, function ($query) use ($search) {
                         $query->where('nama_siswa', 'like', "%$search%")
                               ->orWhereHas('barang', function ($q) use ($search) {
                                   $q->where('nama_barang', 'like', "%$search%");
                               });
                     })
-                    ->paginate(10);
+                    ->paginate($perPage);
     
         return view('guru.peminjaman.index', compact('peminjaman'));
     }
-    
 
     public function create()
     {
@@ -45,7 +47,7 @@ class PeminjamanController extends Controller
             'waktu_pinjam' => 'required',
             'tempat_peminjaman' => 'required|string',
             'nama_siswa' => 'required|string',
-            'kelas_jurusan' => 'required|string', // Tambahkan validasi untuk kelas_jurusan
+            'kelas_jurusan' => 'required|string', 
             'keterangan' => 'nullable|string',
         ]);
 
@@ -57,8 +59,8 @@ class PeminjamanController extends Controller
                 'waktu_pinjam' => $request->waktu_pinjam,
                 'tempat_peminjaman' => $request->tempat_peminjaman,
                 'nama_siswa' => $request->nama_siswa,
-                'kelas_jurusan' => $request->kelas_jurusan, // Simpan kelas_jurusan
-                'total_barang' => count($request->barang), // Hitung jumlah barang yang dipinjam
+                'kelas_jurusan' => $request->kelas_jurusan, 
+                'total_barang' => count($request->barang), 
                 'keterangan' => $request->keterangan,
                 'status_barang' => 'Belum Dikembalikan',
             ]);
@@ -70,10 +72,8 @@ class PeminjamanController extends Controller
                     throw new \Exception('Stok barang tidak mencukupi!');
                 }
 
-                // Kurangi stok barang
                 $barang->decrement('jumlah_barang', $item['jumlah_pinjam']);
 
-                // Simpan ke DetailPeminjaman
                 DetailPeminjaman::create([
                     'id_peminjaman' => $peminjaman->id,
                     'id_barang' => $item['id_barang'],
@@ -99,7 +99,7 @@ class PeminjamanController extends Controller
     public function edit($id)
     {
         $peminjaman = Peminjaman::with('detailPeminjaman.barang')->findOrFail($id);
-        $barang = Barang::all(); // Ambil semua barang untuk dropdown
+        $barang = Barang::all(); 
 
         return view('guru.peminjaman.edit', compact('peminjaman', 'barang'));
     }
@@ -116,11 +116,10 @@ class PeminjamanController extends Controller
             'waktu_pinjam' => 'required',
             'tempat_peminjaman' => 'required|string|max:255',
             'nama_siswa' => 'required|string|max:255',
-            'kelas_jurusan' => 'required|string|max:255', // Tambahkan validasi untuk kelas_jurusan
+            'kelas_jurusan' => 'required|string|max:255', 
             'keterangan' => 'nullable|string',
         ]);
 
-        // Kembalikan stok barang sebelum diupdate
         foreach ($peminjaman->detailPeminjaman as $detail) {
             $barang = Barang::find($detail->id_barang);
             if ($barang) {
@@ -128,20 +127,17 @@ class PeminjamanController extends Controller
             }
         }
 
-        // Hapus detail peminjaman lama
         $peminjaman->detailPeminjaman()->delete();
 
-        // Perbarui data peminjaman
         $peminjaman->update([
             'tanggal_pinjam' => $request->tanggal_pinjam,
             'waktu_pinjam' => $request->waktu_pinjam,
             'tempat_peminjaman' => $request->tempat_peminjaman,
             'nama_siswa' => $request->nama_siswa,
-            'kelas_jurusan' => $request->kelas_jurusan, // Simpan kelas_jurusan
+            'kelas_jurusan' => $request->kelas_jurusan, 
             'keterangan' => $request->keterangan ?? null,
         ]);
 
-        // Simpan ulang barang yang dipinjam
         foreach ($request->barang as $item) {
             $barang = Barang::findOrFail($item['id_barang']);
 
@@ -149,10 +145,8 @@ class PeminjamanController extends Controller
                 return back()->withErrors(['barang' => 'Stok barang tidak mencukupi!'])->withInput();
             }
 
-            // Kurangi stok barang
             $barang->decrement('jumlah_barang', $item['jumlah_pinjam']);
 
-            // Simpan ke DetailPeminjaman
             DetailPeminjaman::create([
                 'id_peminjaman' => $peminjaman->id,
                 'id_barang' => $item['id_barang'],
@@ -169,7 +163,6 @@ class PeminjamanController extends Controller
 
         DB::beginTransaction();
         try {
-            // Kembalikan jumlah stok barang
             foreach ($peminjaman->detailPeminjaman as $detail) {
                 $barang = Barang::find($detail->id_barang);
                 if ($barang) {
@@ -177,10 +170,8 @@ class PeminjamanController extends Controller
                 }
             }
 
-            // Hapus detail peminjaman
             $peminjaman->detailPeminjaman()->delete();
 
-            // Hapus peminjaman
             $peminjaman->delete();
 
             DB::commit();

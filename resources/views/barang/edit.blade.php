@@ -1,63 +1,92 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Barang')
+
 @section('content')
-<div class="container">
-    <div class="card shadow-sm p-4">
-        <h2 class="fw-bold text-warning mb-4"><i class="fas fa-edit"></i> Edit Barang</h2>
-        <form action="{{ route('barang.update', $barang->id) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-edit me-2"></i> Edit Barang</h5>
+                </div>
 
-            <div class="mb-3">
-                <label for="nama_barang" class="form-label fw-semibold">Nama Barang</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-tag"></i></span>
-                    <input type="text" name="nama_barang" class="form-control" value="{{ $barang->nama_barang }}" required>
+                <div class="card-body">
+                    <form action="{{ route('barang.update', $barang->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="row g-3">
+                            {{-- Nama Barang --}}
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Barang</label>
+                                <input type="text" name="nama_barang" value="{{ old('nama_barang', $barang->nama_barang) }}" class="form-control @error('nama_barang') is-invalid @enderror" required>
+                                @error('nama_barang')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Jumlah --}}
+                            <div class="col-md-6">
+                                <label class="form-label">Jumlah Barang</label>
+                                <input type="number" name="jumlah_barang" value="{{ old('jumlah_barang', $barang->jumlah_barang) }}" class="form-control @error('jumlah_barang') is-invalid @enderror" min="1" required>
+                                @error('jumlah_barang')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Keterangan --}}
+                            <div class="col-12">
+                                <label class="form-label">Keterangan</label>
+                                <textarea name="keterangan" rows="3" class="form-control @error('keterangan') is-invalid @enderror">{{ old('keterangan', $barang->keterangan) }}</textarea>
+                                @error('keterangan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Gambar --}}
+                            <div class="col-12">
+                                <label class="form-label">Gambar</label>
+                                <input type="file" name="gambar" id="gambarInput" class="form-control" accept="image/*">
+
+                                <div class="mt-3">
+                                @if($barang->gambar && Storage::disk('public')->exists($barang->gambar))
+                                    <img id="previewGambar" src="{{ asset('storage/' . $barang->gambar) }}" class="img-thumbnail" width="150" alt="Gambar Barang">
+                                @else
+                                    <img id="previewGambar" src="https://via.placeholder.com/150?text=Tidak+Ada+Gambar" class="img-thumbnail" width="150" alt="Tidak ada gambar">
+                                @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Tombol Aksi --}}
+                        <div class="mt-4 d-flex justify-content-between">
+                            <a href="{{ route('barang.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i> Kembali
+                            </a>
+                            <button type="submit" class="btn btn-primary text-white">
+                                <i class="fas fa-save me-2"></i> Update
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="mb-3">
-                <label for="jumlah_barang" class="form-label fw-semibold">Jumlah Barang</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
-                    <input type="number" name="jumlah_barang" class="form-control" value="{{ $barang->jumlah_barang }}" min="1" required>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="keterangan" class="form-label fw-semibold">Keterangan</label>
-                <textarea name="keterangan" class="form-control" rows="3">{{ $barang->keterangan }}</textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="gambar" class="form-label fw-semibold">Gambar Barang</label>
-                <input type="file" name="gambar" class="form-control" id="gambarInput" accept="image/*">
-                <div class="mt-3">
-                    @if($barang->gambar)
-                        <img src="{{ asset('storage/' . $barang->gambar) }}" class="img-thumbnail" id="previewGambar" width="150">
-                    @else
-                        <img class="img-thumbnail d-none" id="previewGambar" width="150">
-                    @endif
-                </div>
-            </div>
-
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-warning"><i class="fas fa-edit"></i> Update Barang</button>
-                <a href="{{ route('barang.index') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Kembali</a>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
+@push('scripts')
 <script>
     document.getElementById('gambarInput').addEventListener('change', function (event) {
-        let reader = new FileReader();
-        reader.onload = function () {
-            let img = document.getElementById('previewGambar');
-            img.src = reader.result;
-            img.classList.remove('d-none');
-        };
-        reader.readAsDataURL(event.target.files[0]);
+        if (event.target.files && event.target.files[0]) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                let img = document.getElementById('previewGambar');
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
     });
 </script>
+@endpush
 @endsection

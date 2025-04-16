@@ -1,107 +1,166 @@
 @extends('layouts.app')
 
+@section('title', 'Manajemen Barang')
+
 @section('content')
-<div class="container">
-    
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <!-- Header -->
+                <div class="card-header bg-gradient-primary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-white fw-bold">Manajemen Barang</h5>
+                    <a href="{{ route('barang.create') }}" class="btn btn-light text-primary fw-bold">
+                        <i class="fas fa-plus me-2"></i> Tambah Barang
+                    </a>
+                </div>
 
-    <!-- Notifikasi -->
-    @if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
+                <!-- Form Pencarian -->
+                <div class="card-body">
+                    <form action="{{ route('barang.index') }}" method="GET" class="mb-4">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Cari Nama Barang" value="{{ request('search') }}">
+                            <button type="submit" class="btn btn-dark">
+                                <i class="fas fa-search me-1"></i> Cari
+                            </button>
+                        </div>
+                    </form>
+                    
+                    @if(request('search'))
+                        <div class="alert alert-info">
+                            Menampilkan hasil pencarian untuk: <strong>{{ request('search') }}</strong>
+                        </div>
+                    @endif
 
+                    <!-- Notifikasi -->
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-4 fw-black text-dark">Manajemen Barang</h4>
-        <a href="{{ route('barang.create') }}" class="btn btn-success"><i class="fas fa-plus"></i> Tambah Barang</a>
-    </div>
-        <div>
-            <!-- Form Pencarian -->
-            <form action="{{ route('barang.index') }}" method="GET" class="mb-3 d-flex justify-content-between">
-            <input type="text" name="search" class="form-control me-2" placeholder=" Cari Nama Barang" value="{{ request('search') }}">
-            <button type="submit" class="btn btn-dark">Cari</button>
-            </form>
+                    <!-- Tabel Data -->
+                    <div class="table-responsive shadow-sm rounded">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-primary text-center">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Gambar</th>
+                                    <th>Nama Barang</th>
+                                    <th>Jumlah</th>
+                                    <th>Keterangan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($barang as $index => $b)
+                                <tr class="text-center">
+                                    <td>{{ $barang->firstItem() + $index }}</td>
+                                    <td>
+                                        <img src="{{ asset('storage/' . $b->gambar) }}" alt="{{ $b->nama_barang }}" class="rounded" width="60">
+                                    </td>
+                                    <td class="fw-semibold">{{ $b->nama_barang }}</td>
+                                    <td>{{ $b->jumlah_barang }}</td>
+                                    <td>{{ $b->keterangan }}</td>
+                                    <td>
+                                        <a href="{{ route('barang.edit', $b->id) }}" class="btn btn-warning btn-sm me-1">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-danger delete-btn" data-id="{{ $b->id }}" data-bs-toggle="tooltip" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <form id="delete-form-{{ $b->id }}" action="{{ route('barang.destroy', $b->id) }}" method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-3">Tidak ada data barang ditemukan</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
 
-            @if(request('search'))
-            <p class="text-muted text-center">Menampilkan hasil pencarian untuk: <strong>{{ request('search') }}</strong></p>
-            @endif
-        </div>
-        <!-- Tabel Barang -->
-    <div class="table-responsive shadow-sm rounded">
-        <table class="table table-hover align-middle">
-            <thead class="table-primary text-center">
-                <tr>
-                    <th>No</th>
-                    <th>Gambar</th>
-                    <th>Nama Barang</th>
-                    <th>Jumlah</th>
-                    <th>Keterangan</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($barang as $index => $b)
-                <tr class="text-center">
-                    <td>{{ ($barang->currentPage() - 1) * $barang->perPage() + $loop->iteration }}</td>
-                    <td>
-                        <img src="{{ asset('storage/' . $b->gambar) }}" alt="Gambar {{ $b->nama_barang }}" class="rounded" width="60">
-                    </td>
-                    <td class="fw-semibold">{{ $b->nama_barang }}</td>
-                    <td>{{ $b->jumlah_barang }}</td>
-                    <td>{{ $b->keterangan }}</td>
-                    <td>
-                        <a href="{{ route('barang.edit', $b->id) }}" class="btn btn-warning btn-sm me-1">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $b->id }})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="6" class="text-center text-muted">Tidak ada barang ditemukan</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-    <div>
-        {{ $barang->links() }} <!-- Pagination links -->
-    </div>
-    
-<!-- Modal Konfirmasi Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold text-danger" id="deleteModalLabel">Konfirmasi Hapus</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-                <p class="fw-semibold">Apakah Anda yakin ingin menghapus barang ini?</p>
-            </div>
-            <div class="modal-footer">
-                <form id="deleteForm" method="POST" action="">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Hapus</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                </form>
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div>
+                            Menampilkan {{ $barang->firstItem() ?? 0 }} hingga {{ $barang->lastItem() ?? 0 }} dari {{ $barang->total() }} data
+                        </div>
+                        <div>
+                            {{ $barang->links() }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Konfirmasi Hapus</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                <p class="fw-semibold">Apakah Anda yakin ingin menghapus barang ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
 <script>
-    function confirmDelete(id) {
-        let form = document.getElementById('deleteForm');
-        form.action = `/admin/barang/${id}`;
-        let modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        modal.show();
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+        let deleteId = null;
+        let deleteForm = null;
+
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                deleteId = this.getAttribute('data-id');
+                deleteForm = document.getElementById('delete-form-' + deleteId);
+                let modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+                modal.show();
+            });
+        });
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+            if (deleteForm) {
+                deleteForm.submit();
+            }
+        });
+
+        // Auto-hide alerts
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(alert => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+
+        // Tooltip
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(el => new bootstrap.Tooltip(el));
+    });
 </script>
+@endpush
+
 @endsection

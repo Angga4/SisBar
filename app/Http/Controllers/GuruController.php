@@ -76,12 +76,10 @@ class GuruController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Cek jika user adalah guru dan masih memiliki peminjaman dengan status "belum dikembalikan"
         if ($user->role === 'guru' && $user->peminjaman()->where('status_barang', 'Belum Dikembalikan')->exists()) {
             return redirect()->back()->with('error', 'Akun guru tidak dapat dihapus karena masih ada peminjaman barang yang belum dikembalikan.');
         }
 
-        // Jika tidak ada peminjaman yang belum dikembalikan, maka bisa dihapus
         $user->delete();
         return redirect()->back()->with('success', 'Akun guru berhasil dihapus.');
     }

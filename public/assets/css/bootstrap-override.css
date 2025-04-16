@@ -1,0 +1,232 @@
+/* Bootstrap Override CSS */
+
+/* Override primary colors */
+.btn-primary {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+  }
+  
+  .btn-primary:hover,
+  .btn-primary:focus,
+  .btn-primary:active {
+    background-color: #1e40af !important;
+    border-color: #1e40af !important;
+  }
+  
+  .btn-outline-primary {
+    color: #3b82f6;
+    border-color: #3b82f6;
+  }
+  
+  .btn-outline-primary:hover,
+  .btn-outline-primary:focus,
+  .btn-outline-primary:active {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+  }
+  
+  .text-primary {
+    color: #3b82f6 !important;
+  }
+  
+  .bg-primary {
+    background-color: #3b82f6 !important;
+  }
+  
+  .border-primary {
+    border-color: #3b82f6 !important;
+  }
+  
+  /* Form controls */
+  .form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+  }
+  
+  .form-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+  }
+  
+  .form-check-input:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+  }
+  
+  /* Pagination */
+  .page-item.active .page-link {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+  }
+  
+  .page-link {
+    color: #3b82f6;
+  }
+  
+  .page-link:hover {
+    color: #1e40af;
+  }
+  
+  /* Alerts */
+  .alert-primary {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.2);
+    color: #1e40af;
+  }
+  
+  /* Tables */
+  .table-primary {
+    --bs-table-bg: rgba(59, 130, 246, 0.1);
+    --bs-table-striped-bg: rgba(59, 130, 246, 0.15);
+    --bs-table-active-bg: rgba(59, 130, 246, 0.2);
+    --bs-table-hover-bg: rgba(59, 130, 246, 0.15);
+    --bs-table-border-color: rgba(59, 130, 246, 0.2);
+    color: #1e40af;
+  }
+  
+  /* Badges */
+  .badge.bg-primary {
+    background-color: #3b82f6 !important;
+  }
+  
+  /* Progress bars */
+  .progress-bar {
+    background-color: #3b82f6;
+  }
+  
+  /* List groups */
+  .list-group-item.active {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+  }
+  
+  /* Navs and tabs */
+  .nav-pills .nav-link.active,
+  .nav-pills .show > .nav-link {
+    background-color: #3b82f6;
+  }
+  
+  .nav-link {
+    color: #3b82f6;
+  }
+  
+  .nav-link:hover,
+  .nav-link:focus {
+    color: #1e40af;
+  }
+  
+  /* Dropdowns */
+  .dropdown-item.active,
+  .dropdown-item:active {
+    background-color: #3b82f6;
+  }
+  
+  /* Buttons */
+  .btn {
+    border-radius: 0.5rem;
+  }
+  
+  .btn-sm {
+    border-radius: 0.4rem;
+  }
+  
+  .btn-lg {
+    border-radius: 0.6rem;
+  }
+  
+  /* Cards */
+  .card {
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  .card-header:first-child {
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  
+  .card-footer:last-child {
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+  
+  /* Modals */
+  .modal-content {
+    border-radius: 0.5rem;
+    border: none;
+  }
+  
+  .modal-header {
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  
+  .modal-footer {
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+  
+  /* Toasts */
+  .toast {
+    border-radius: 0.5rem;
+  }
+  
+  /* Inputs */
+  .form-control,
+  .form-select {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .input-group-text {
+    border-radius: 0.5rem;
+  }
+  
+  /* Dark mode overrides */
+  .dark-version .btn-primary {
+    background-color: #60a5fa;
+    border-color: #60a5fa;
+  }
+  
+  .dark-version .btn-primary:hover,
+  .dark-version .btn-primary:focus,
+  .dark-version .btn-primary:active {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+  }
+  
+  .dark-version .form-control,
+  .dark-version .form-select {
+    background-color: #333;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+  
+  .dark-version .input-group-text {
+    background-color: #444;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+  
+  .dark-version .card,
+  .dark-version .modal-content {
+    background-color: #2a2a2a;
+  }
+  
+  .dark-version .card-header,
+  .dark-version .card-footer,
+  .dark-version .modal-header,
+  .dark-version .modal-footer {
+    background-color: #333;
+    border-color: #444;
+  }
+  
+  .dark-version .table {
+    color: #e0e0e0;
+  }
+  
+  .dark-version .table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .dark-version .text-muted {
+    color: #aaa !important;
+  }
+  

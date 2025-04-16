@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIPBAR - Sistem Peminjaman Barang Sekolah</title>
+    <title>SIPBAR - Sistem Manajemen Peminjaman Barang Sekolah</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -33,8 +33,8 @@
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
                     <div class="hero-content">
-                        <h1 class="hero-title">Sistem Peminjaman Barang Sekolah</h1>
-                        <p class="hero-subtitle">Kelola peminjaman barang sekolah dengan mudah, cepat, dan efisien. Lacak barang, catat peminjam, dan pantau pengembalian dalam satu platform terintegrasi.</p>
+                        <h1 class="hero-title">Sistem Manajemen Peminjaman Barang Sekolah</h1>
+                        <p class="hero-subtitle">Kelola peminjaman barang sekolah dengan mudah, cepat, dan efisien. catat peminjam, dan pantau pengembalian dalam satu platform terintegrasi.</p>
                         <div class="d-flex">
                             <a href="{{ route('detail_barang') }}" class="btn btn-primary btn-lg me-3">Lihat Barang</a>
                             <a href="#tentang" class="btn btn-outline-primary btn-lg">Pelajari Lebih Lanjut</a>
@@ -59,7 +59,7 @@
             <div class="row mb-50">
                 <div class="col-lg-6 mx-auto text-center">
                     <h2 class="section-title text-center" data-aos="fade-up">Tentang SIPBAR</h2>
-                    <p data-aos="fade-up" data-aos-delay="100">Sistem peminjaman barang sekolah yang mempermudah proses peminjaman dan pengembalian barang sekolah dengan pencatatan yang terstruktur dan monitoring yang efisien.</p>
+                    <p data-aos="fade-up" data-aos-delay="100">Sistem Manajemen peminjaman barang sekolah yang mempermudah proses peminjaman dan pengembalian barang sekolah dengan pencatatan yang terstruktur dan monitoring yang efisien.</p>
                 </div>
             </div>
             <div class="row align-items-center">
@@ -268,7 +268,7 @@
 </section>
 
     <!-- Stats Section -->
-    <section class="stats-section" id="statistik">
+    <!-- <section class="stats-section" id="statistik">
         <div class="container">
             <div class="row mb-50">
                 <div class="col-lg-6 mx-auto text-center">
@@ -277,7 +277,6 @@
                 </div>
             </div>
             <div class="row">
-                <!-- Stat 1 -->
                 <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="stats-card">
                         <div class="stats-icon">
@@ -288,7 +287,7 @@
                     </div>
                 </div>
                 
-                <!-- Stat 2 -->
+           
                 <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="200">
                     <div class="stats-card">
                         <div class="stats-icon">
@@ -299,7 +298,7 @@
                     </div>
                 </div>
                 
-                <!-- Stat 3 -->
+              
                 <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="300">
                     <div class="stats-card">
                         <div class="stats-icon">
@@ -310,7 +309,7 @@
                     </div>
                 </div>
                 
-                <!-- Stat 4 -->
+               
                 <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="400">
                     <div class="stats-card">
                         <div class="stats-icon">
@@ -322,7 +321,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Testimonials Section -->
     <section class="testimonial-section" id="testimoni">

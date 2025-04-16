@@ -19,7 +19,7 @@
                     <a class="nav-link" href="{{ request()->is('/') ? '#prosedur' : '/#prosedur' }}">Prosedur</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ request()->is('/') ? '#statistik' : '/#statistik' }}">Statistik</a>
+                    <!-- <a class="nav-link" href="{{ request()->is('/') ? '#statistik' : '/#statistik' }}">Statistik</a> -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ request()->is('/') ? '#testimoni' : '/#testimoni' }}">Testimoni</a>
