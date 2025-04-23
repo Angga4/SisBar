@@ -73,14 +73,15 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <div>
-                            Menampilkan {{ $guru->firstItem() }} hingga {{ $guru->lastItem() }} dari {{ $guru->total() }} data
-                        </div>
-                        <div>
-                            {{ $guru->links() }} <!-- ✅ Pagination Laravel -->
-                        </div>
+                    
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
+                    <div class="text-muted small">
+                        Menampilkan <strong>{{ $guru->firstItem() ?? 0 }}</strong> hingga <strong>{{ $guru->lastItem() ?? 0 }}</strong> dari <strong>{{ $guru->total() }}</strong> data
                     </div>
+                    <div>
+                        {{ $guru->onEachSide(1)->links('vendor.pagination.bootstrap-5') }}
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -131,28 +132,6 @@
                 new bootstrap.Alert(alert).close();
             });
         }, 4000);
-
-        // Initialize DataTable for enhanced table features
-        $(document).ready(function() {
-            $('#guruTable').DataTable({
-                responsive: true,
-                paging: false, // Disable DataTable pagination to use Laravel pagination
-                searching: true,
-                ordering: true,
-                language: {
-                    search: "Cari:",
-                    lengthMenu: "Tampilkan _MENU_ entri",
-                    info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ entri",
-                    infoEmpty: "Menampilkan 0 hingga 0 dari 0 entri",
-                    paginate: {
-                        first: "Pertama",
-                        last: "Terakhir",
-                        next: "Selanjutnya",
-                        previous: "Sebelumnya"
-                    }
-                }
-            });
-        });
     });
 </script>
 @endsection

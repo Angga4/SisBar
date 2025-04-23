@@ -207,6 +207,26 @@
             alert('Jumlah pinjaman tidak boleh lebih dari stok yang tersedia!');
         }
     }
+    function isBarangSudahDipilih(idBarang) {
+    const allSelects = document.querySelectorAll('.barang-select');
+    let count = 0;
+    allSelects.forEach(select => {
+        if (select.value === idBarang) {
+            count++;
+        }
+    });
+    return count > 1;
+    }
+
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('barang-select')) {
+            const selectedId = e.target.value;
+            if (selectedId && isBarangSudahDipilih(selectedId)) {
+                alert('Barang ini sudah dipilih. Pilih barang lain.');
+                e.target.value = '';
+            }
+        }
+    });
 </script>
 @endpush
 @endsection

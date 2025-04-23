@@ -92,14 +92,14 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <div>
-                            Menampilkan {{ $barang->firstItem() ?? 0 }} hingga {{ $barang->lastItem() ?? 0 }} dari {{ $barang->total() }} data
-                        </div>
-                        <div>
-                            {{ $barang->links() }}
-                        </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 gap-2">
+                    <div class="text-muted small">
+                        Menampilkan <strong>{{ $barang->firstItem() ?? 0 }}</strong> hingga <strong>{{ $barang->lastItem() ?? 0 }}</strong> dari <strong>{{ $barang->total() }}</strong> data
                     </div>
+                    <div>
+                        {{ $barang->onEachSide(1)->links('vendor.pagination.bootstrap-5') }}
+                    </div>
+                </div>
                 </div>
             </div>
         </div>

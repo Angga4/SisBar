@@ -95,14 +95,15 @@
                         </div>
                         
                         <!-- Pagination -->
-                        <div class="d-flex justify-content-between align-items-center mt-4">
-                            <div>
-                                Menampilkan {{ $peminjaman->firstItem() ?? 0 }} hingga {{ $peminjaman->lastItem() ?? 0 }} dari {{ $peminjaman->total() }} data
-                            </div>
-                            <div>
-                                {{ $peminjaman->links() }}
-                            </div>
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 gap-2">
+                        <div class="text-muted small">
+                            Menampilkan <strong>{{ $peminjaman->firstItem() ?? 0 }}</strong> hingga <strong>{{ $peminjaman->lastItem() ?? 0 }}</strong> dari <strong>{{ $peminjaman->total() }}</strong> data
                         </div>
+                        <div>
+                            {{ $peminjaman->onEachSide(1)->links('vendor.pagination.bootstrap-5') }}
+                        </div>
+                    </div>
+
                     @endif
                 </div>
             </div>

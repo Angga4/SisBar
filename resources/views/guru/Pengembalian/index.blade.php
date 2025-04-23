@@ -230,14 +230,14 @@
                         </div>
                         
                         <!-- Pagination -->
-                        <div class="d-flex justify-content-between align-items-center mt-4">
-                            <div>
-                                Menampilkan {{ $pengembalian->firstItem() ?? 0 }} hingga {{ $pengembalian->lastItem() ?? 0 }} dari {{ $pengembalian->total() }} data
-                            </div>
-                            <div>
-                                {{ $pengembalian->links() }}
-                            </div>
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 gap-2">
+                        <div class="text-muted small">
+                            Menampilkan <strong>{{ $pengembalian->firstItem() ?? 0 }}</strong> hingga <strong>{{ $pengembalian->lastItem() ?? 0 }}</strong> dari <strong>{{ $pengembalian->total() }}</strong> data
                         </div>
+                        <div>
+                            {{ $pengembalian->onEachSide(1)->links('vendor.pagination.bootstrap-5') }}
+                        </div>
+                    </div>
                     @endif
                 </div>
             </div>

@@ -39,6 +39,11 @@ class PeminjamanController extends Controller
 
     public function store(Request $request)
     {
+        $barangIds = array_column($request->barang, 'id_barang');
+        if (count($barangIds) !== count(array_unique($barangIds))) {
+            return back()->withErrors(['barang' => 'Terdapat barang yang dipilih lebih dari sekali. Pilih barang yang berbeda.'])->withInput();
+        }
+
         $request->validate([
             'barang' => 'required|array',
             'barang.*.id_barang' => 'required|exists:barang,id',
@@ -94,6 +99,7 @@ class PeminjamanController extends Controller
             DB::rollBack();
             return back()->withErrors(['error' => $e->getMessage()])->withInput();
         }
+        
     }
 
     public function edit($id)
